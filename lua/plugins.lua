@@ -28,7 +28,7 @@ return require('packer').startup({function(use)
                         module = 'ssr'
                 }
                 use{'Dkendal/nvim-treeclimber',
-                        module = 'nvim-treesitter',
+                        after = 'nvim-treesitter',
                         -- event = 'CursorHold',
                        config = function() require('nvim-treeclimber').setup() end
                 }
