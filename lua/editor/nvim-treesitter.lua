@@ -7,7 +7,18 @@ parser_config.wgsl = {
         }
 
 require'nvim-treesitter.configs'.setup {
-        ensure_installed = { "rust", "toml", "kotlin", "elixir", "lua", "vim", "org", "markdown", "wgsl", "svelte" },
+        ensure_installed = {
+                "rust",
+                "toml",
+                "kotlin",
+                "bash",
+                "lua",
+                "vim",
+                "regex",
+                "markdown",
+                "wgsl",
+                "svelte"
+        },
         sync_install = false,
         ignore_install = { "javascript" },
         highlight = {

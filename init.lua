@@ -44,6 +44,7 @@ set.hidden = true
 set.cmdheight = 2
 set.updatetime = 300
 set.shortmess = "filnxtToOFc"
+set.formatoptions = "jrql"
 set.signcolumn = "yes"
 
 --  }}}
@@ -71,16 +72,18 @@ keymap('n', "<leader>ff", "<cmd>Telescope find_files<cr>", opts)
 keymap('n', "<leader>fg", "<cmd>Telescope live_grep<cr>", opts)
 keymap('n', "<leader>fb", "<cmd>Telescope buffers<cr>", opts)
 keymap('n', "<leader>fh", "<cmd>Telescope help_tags<cr>", opts)
+keymap('n', "<leader>fp", "<cmd>Telescope projections<cr>", opts)
 
 keymap('n', "zs", "<cmd>term zsh<cr>a", opts)
 keymap('n', "<leader>g", "<cmd>Neogit kind=vsplit", opts)
 
 keymap('n', "ta", "<cmd>tabnew<cr>", opts)
 keymap('n', "tc", "<cmd>tabclose<cr>", opts)
-keymap('n', "tn", "<cmd>tabn<cr>", opts)
-keymap('n', "tp", "<cmd>tabp<cr>", opts)
+keymap('n', "tn", "gt", opts)
+keymap('n', "tp", "gT", opts)
 
 keymap('n', '-', "<cmd>lua require('lir.float').init()<cr>", opts)
+keymap('n', '<leader>sr', "<cmd>lua require('ssr').open()<cr>", opts)
 
 keymap('n', "<leader>zn", "<cmd>TZNarrow<cr>", opts)
 keymap('v', "<leader>zn", "<cmd>'<,'>TZNarrow<cr>", opts)
@@ -112,32 +115,25 @@ keymap('n', "gh", "<cmd>Lspsaga show_cursor_diagnostics<cr>")
 --  -------------------------------------------------------
 --  {{{ Plugin Setup Commands
 
-vim.notify = require('notify')
+-- vim.notify = require('notify')
 
 set.termguicolors = true
 vim.cmd.colorscheme('nord')
 set.background = "dark"
 
-vim.cmd[[ runtime! lua/**.lua ]]
+vim.cmd[[ runtime! lua/plugins.lua ]]
+vim.cmd[[ runtime! lua/devicons.lua ]]
+vim.cmd[[ runtime! lua/highlights.lua ]]
 
 --  }}}
 --  -------------------------------------------------------
 --  {{{ Variables
 
-
 set.sessionoptions:append { "winpos,terminal,folds" }
--- set.formatoptions:gsub ("co", '')
 
 --  }}}
 --  -------------------------------------------------------
 --  {{{ Functions
-
--- local function trim_whitespace()
---         local save = winsaveview()
---         vim.cmd[[ %s/\\\@<!\s\+$//e]]
---         winrestview(save)
--- end
-
 
 --  }}}
 --  -------------------------------------------------------
@@ -175,6 +171,11 @@ vim.api.nvim_create_autocmd(
         end,
         group = "alpha-nvim"
         }
+)
+
+vim.api.nvim_create_autocmd(
+        { "VimLeavePre", "DirChangedPre" },
+        { callback = function() require('projections.session').store(vim.loop.cwd()) end } 
 )
 
 vim.cmd[[ autocmd BufRead,BufNewFile *.wgsl set filetype=wgsl ]]

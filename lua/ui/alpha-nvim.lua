@@ -43,7 +43,7 @@ local buttons = {
         type = "group",
         val = {
                 button('f', "Find Files", ":Telescope find_files<cr>"),
-                button('s', "Open Previous Session", ":SessionManager load_session<cr>"),
+                button('s', "Open Previous Session", ":Telescope projections<cr>"),
                 button('g', "Find Word", ":Telescope live_grep<cr>")
         },
         opts = {

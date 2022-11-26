@@ -24,20 +24,22 @@ return require('packer').startup({function(use)
                         keys = { 'ys', 'cs', 'ds' },
                         config = function() require('nvim-surround').setup() end
                 }
-                use{'otavioschwanck/cool-substitute.nvim',
-                        keys = { 'gm', 'gM', 'g!M' },
-                        config = function() require('cool-substitute').setup({
-                                setup_keybindings = true,
-                                })
-                        end
+                use{'cshuaimin/ssr.nvim',
+                        module = 'ssr'
                 }
-                use{'wellle/targets.vim',  opt = true}
-                use{'anuvyklack/hydra.nvim', module = 'hydra'}
+                use{'Dkendal/nvim-treeclimber',
+                        module = 'nvim-treesitter',
+                        -- event = 'CursorHold',
+                       config = function() require('nvim-treeclimber').setup() end
+                }
+                -- use{'wellle/targets.vim',  opt = true}
+                -- use{'anuvyklack/hydra.nvim', module = 'hydra'}
                 use{'tpope/vim-unimpaired', keys = { '[', ']' }}
         -- }}}
 
         -- {{{ Extra Functionality
-                use{'rcarriga/nvim-notify',
+                use{'folke/noice.nvim',
+                        event = { 'CmdLineEnter', 'BufEnter' },
                         config = function() require('editor.notify') end
                 }
                 use{'nvim-telescope/telescope.nvim',
@@ -60,28 +62,30 @@ return require('packer').startup({function(use)
                                 require('leap').set_default_keymaps()
                         end,
                 }
-                use{'jinh0/eyeliner.nvim',
-                        keys = { 'f', 'F' },
-                        config = function() require('eyeliner').setup({
-                                        highlight_on_key = true
-                                })
-                        end
-                }
-                use{'TimUntersberger/neogit', keys = '<leader>g', cmd = "Neogit" }
+                -- use{'jinh0/eyeliner.nvim',
+                --         keys = { 'f', 'F' },
+                --         config = function() require('eyeliner').setup({
+                --                         highlight_on_key = true
+                --                 })
+                --         end
+                -- }
+                -- use{'TimUntersberger/neogit', keys = '<leader>g', cmd = "Neogit" }
                 use{'tamago324/lir.nvim',
                         module = 'lir',
                         event = 'VimEnter',
                         config = function() require('ui.lir') end
                 }
-                use{'mbbill/undotree',
-                        cmd = "UndoTreeToggle"
-                }
+                -- use{'mbbill/undotree',
+                --         cmd = "UndoTreeToggle"
+                -- }
         -- }}}
 
         use{'wbthomason/packer.nvim', opt = true}
         use{'nvim-lua/plenary.nvim', module = 'plenary'}
         use{'lewis6991/impatient.nvim'}
         use{'tami5/sqlite.lua'}
+        use{'MunifTanjim/nui.nvim', module = 'nui'}
+        use{'rktjmp/lush.nvim', module = 'lush'}
         use{'windwp/nvim-autopairs',
                 event = 'InsertEnter',
                 config = function() require('nvim-autopairs').setup() end
@@ -90,22 +94,28 @@ return require('packer').startup({function(use)
                 module = 'which-key',
                 config = function() require('editor.which-key') end
         }
-        use{'Shatur/neovim-session-manager',
-                cmd = 'SessionManager',
-                event = 'BufWritePost',
-                config = function() require('session_manager').setup() end
+        use{'gnikdroy/projections.nvim',
+                module = 'projections',
+                after = 'telescope.nvim',
+                event = { 'VimLeavePre', 'DirChangedPre' },
+                config = function()
+                        require('projections').setup({})
+                        require'telescope'.load_extension('projections')
+                end
         }
 -- }}}
 
 -- {({ Language Server
         use{'neovim/nvim-lspconfig',
-                after = 'nvim-cmp',
-                event = { 'BufRead', 'BufNewFile', 'InsertEnter'},
+                -- after = 'nvim-cmp',
+                module = 'lspconfig',
+                event = { --[[ 'BufRead', ]] 'CursorHold', 'BufNewFile', 'InsertEnter'},
                 config = function() require('lsp.lspconfig') end
         }
 
         use{'hrsh7th/nvim-cmp',
                 event = {'InsertEnter', 'CmdLineEnter'},
+                after = 'friendly-snippets',
                 requires = {
                         {'onsails/lspkind.nvim',
                                 event = { 'InsertEnter', 'CmdLineEnter'},
@@ -114,12 +124,12 @@ return require('packer').startup({function(use)
                 },
                 config = function() require('lsp.cmp') end
         }
-        use{'hrsh7th/cmp-nvim-lsp', module = 'cmp_nvim_lsp'}
+        use{'hrsh7th/cmp-nvim-lsp', after = 'cmp-nvim-lua'}
         use{'hrsh7th/cmp-buffer', after = 'nvim-cmp'}
         use{'hrsh7th/cmp-path', after = 'nvim-cmp'}
-        use{'hrsh7th/cmp-cmdline', after = 'nvim-cmp'}
+        use{'hrsh7th/cmp-cmdline', after = 'cmp-buffer'}
         use{'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp'}
-        use{'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp'}
+        use{'saadparwaiz1/cmp_luasnip', after = 'LuaSnip'}
         use{'glepnir/lspsaga.nvim',
                 branch = 'main',
                 after = 'nvim-lspconfig',
@@ -127,10 +137,14 @@ return require('packer').startup({function(use)
         }
         use{'L3MON4D3/LuaSnip',
                 after = 'nvim-cmp',
-                requires = {'rafamadriz/friendly-snippets', opt = true}
+                requires = 'friendly-snippets'
+        }
+        use{'rafamadriz/friendly-snippets',
+                module = { 'cmp', 'cmp_nvim_lsp' },
+                event = 'InsertEnter',
         }
         use{'danymat/neogen', ft = treesitter_filetypes}
-        use{'nvim-neotest/neotest'}
+        use{'nvim-neotest/neotest', ft = treesitter_filetypes}
 -- }}}
 
 -- {{{ Language Specific
@@ -145,30 +159,30 @@ return require('packer').startup({function(use)
 -- }}}
 
 -- {{{ Aesthetics
-        use{'Pocco81/true-zen.nvim',
-                opt = true,
-                cmd = {
-                        'TZAtaraxis',
-                        'TZFocus',
-                        'TZMinimalist',
-                        'TZNarrow'
-                },
-                config = function() require('accessories.true-zen') end
-        }
+        -- use{'Pocco81/true-zen.nvim',
+        --         cmd = {
+        --                 'TZAtaraxis',
+        --                 'TZFocus',
+        --                 'TZMinimalist',
+        --                 'TZNarrow'
+        --         },
+        --         config = function() require('accessories.true-zen') end
+        -- }
         use{'NTBBloodbath/galaxyline.nvim',
+                after = 'nord.nvim',
                 config = function() require('ui.galaxyline') end
         }
         use{'nanozuki/tabby.nvim',
+                after = 'nord.nvim',
                 config = function() require('ui.tabby') end
         }
         use{'kyazdani42/nvim-web-devicons'}
-        -- use{'glepnir/dashboard-nvim'}
         use{'goolord/alpha-nvim',
                 config = function() require('ui.alpha-nvim') end
         }
         use{'nvim-treesitter/nvim-treesitter',
                 run = ':TSUpdate',
-                event = 'BufRead',
+                event = 'CursorHold',
                 config = function() require('editor.nvim-treesitter') end
         }
         use{'lukas-reineke/headlines.nvim',
@@ -197,6 +211,5 @@ config = {
         },
         profile = {
                 enable = true,
-                threshold = 1
         }
 }})

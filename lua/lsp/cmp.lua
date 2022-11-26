@@ -2,8 +2,6 @@ local symbol_map = require('icons').symbol_map
 local cmp = require'cmp'
 local lspkind = require('lspkind')
 
-
-
 cmp.setup({
         formatting = {
                 fields = { "kind", "abbr" },
@@ -34,7 +32,7 @@ cmp.setup({
         },
         window = {
                 completion = {
-                        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None,PmenuSel:PmenuSel",
+                        winhighlight = "Normal:CmpPmenu,FloatBorder:Pmenu,Search:None,PmenuSel:PmenuSel",
                         col_offest = -3,
                         side_padding = 0,
                          -- border = {
@@ -87,7 +85,7 @@ cmp.setup.cmdline(':', {
 })
 
 -- Setup lspconfig.
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local servers = {'rust_analyzer',
         'crystalline',
         'elixirls',
