@@ -134,7 +134,7 @@ gls.right[1] = {
                 provider = function() return "" end,
                 condition = condition.check_git_workspace,
                 separator = "",
-                separator_highlight = "GalaxyViModeReverse",
+                separator_highlight = "GalaxyViModeReverseBg",
                 highlight = "GalaxyViMode",
         }
 }

@@ -11,7 +11,7 @@ saga.init_lsp_saga({
         },
         symbol_in_winbar = {
                 enable = true,
-                separator = get("chevron-right") .. ' '
+                separator = get("chevron-right") .. ' ',
         },
         custom_kind = {
                 Class = {custom_kind.Class .. ' ', colors.nord15},

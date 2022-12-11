@@ -40,6 +40,7 @@ highlight("TelescopeResultsBorder", { bg=H.colors.bg, fg=H.colors.bg })
 
 highlight("TelescopePromptNormal", { bg=H.colors.nord2, fg=H.colors.nord4 })
 highlight("TelescopePromptPrefix", { bg=H.colors.nord2, fg=H.colors.nord11 })
+highlight("TelescopePromptCounter", { bg=H.colors.nord2, fg=H.colors.nord11 })
 
 highlight("TelescopeNormal", { bg=H.colors.bg })
 highlight("TelescopePreviewNormal", { bg=H.colors.bg })
@@ -97,5 +98,8 @@ highlight("CmpItemKindTypeParameter", { bg=H.colors.nord8, fg=H.colors.nord4 })
 highlight("AlphaHeader", { fg=H.colors.nord9 })
 highlight("AlphaButton", { fg=H.colors.nord8 })
 highlight("AlphaFooter", { fg=H.colors.nord9 })
+
+-- Lspsaga
+highlight("LspFloatWinNormal", { bg=H.colors.nord0 })
 
 return H

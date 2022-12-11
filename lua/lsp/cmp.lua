@@ -11,13 +11,10 @@ cmp.setup({
                                 maxwidth = 50,
                                 symbol_map = symbol_map
                         })(entry, vim_item)
-                        -- local strings = vim.split(kind.kind, "%s", { trimempty = true })
-                        -- kind.kind = ' ' .. strings[1] .. '  '
                         kind.kind = ' ' .. kind.kind .. '  '
                         kind.dup = ({
                                 luasnip = 0,
                                 nvim_lsp = 0,
-                                nvim_lua = 0,
                                 buffer = 0,
                         })[entry.source.name] or 0
 
@@ -32,12 +29,9 @@ cmp.setup({
         },
         window = {
                 completion = {
-                        winhighlight = "Normal:CmpPmenu,FloatBorder:Pmenu,Search:None,PmenuSel:PmenuSel",
+                        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
                         col_offest = -3,
                         side_padding = 0,
-                         -- border = {
-                         --                '╭', '─', '╮', '│', '╯', '─', '╰', '│'
-                         --        },
                 },
                 documentation = cmp.config.window.bordered(),
         },
@@ -86,7 +80,8 @@ cmp.setup.cmdline(':', {
 
 -- Setup lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-local servers = {'rust_analyzer',
+local servers = {
+        'rust_analyzer',
         'crystalline',
         'elixirls',
         'kotlin_language_server',
